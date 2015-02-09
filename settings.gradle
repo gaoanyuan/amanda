@@ -1,0 +1,8 @@
+rootProject.name = 'amanda'
+
+include 'robot'
+
+include 'projects'
+
+include 'modules'
+

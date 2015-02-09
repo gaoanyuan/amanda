@@ -1,0 +1,41 @@
+apply plugin: 'java'
+
+sourceCompatibility = 1.5
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.gaoay.amanda.robot.Commander'
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+task startRobot(dependsOn:build) {
+    def classPath = project.buildDir.absolutePath + "\\libs\\*"
+    Process proc =Runtime.getRuntime().exec("java -classpath " + classPath + " org.gaoay.amanda.robot.Commander");
+    def inputStream = proc.getInputStream()
+    Thread thread = new Thread(new Runnable() {
+        @Override
+        void run() {
+            inputStream.eachLine {
+                String line ->
+                    println line;
+            }
+        }
+    }).start();
+    def outputStream = proc.getOutputStream()
+    System.in.eachLine {
+        String line ->
+            if("exit".equals(line)){
+                println "exit ok!";
+                thread.stop();
+                return;
+            }
+            outputStream.println(line)
+    }
+}
