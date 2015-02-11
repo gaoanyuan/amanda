@@ -1,20 +1,15 @@
-apply plugin: 'java'
-sourceCompatibility = 1.6
+
 version = '1.0'
-
-
-
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
-}
 subprojects{
 /*============================================= 所有项目默认的配置 ===================================================*/
-
+    apply plugin: 'java'
+    apply plugin: 'maven'
 /*=================================================== 仓库设置 =======================================================*/
     repositories {
         mavenLocal()
-        mavenRepo urls: "http://123.56.107.182:8081/nexus/content/repositories/releases/"
+        maven {
+            url "http://123.56.107.182:8081/nexus/content/repositories/releases/"
+        }
         mavenCentral()
     }
     uploadArchives {
@@ -29,10 +24,9 @@ subprojects{
 /*================================================== jar包，设置 =====================================================*/
     jar {
         manifest {
-            attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
+            attributes 'Implementation-Title': 'Gradle Quickstart'
         }
     }
 /*====================== libs 中 *.jar 包含在compile中,主要针对不能发布在maven repository的jar包 =====================*/
-    ext.jarTree = fileTree(dir: '/libs', include: '**/*.jar')
-    compile jarTree
+    ext.libs = fileTree(dir: '/libs', include: '**/*.jar')
 }

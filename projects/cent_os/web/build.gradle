@@ -1,6 +1,9 @@
-//apply plugin: 'jetty'
-apply plugin: 'war'
+apply plugin: 'jetty'
+httpPort = 8080d
+
 dependencies {
     //compile project(':shared')
-
+    compile(
+            libraries.'spring-webmvc'
+    )
 }
