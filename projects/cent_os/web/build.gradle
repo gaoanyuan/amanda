@@ -1,5 +1,5 @@
 apply plugin: 'jetty'
-httpPort = 8080d
+httpPort = 8080
 
 dependencies {
     //compile project(':shared')
