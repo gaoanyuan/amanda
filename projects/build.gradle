@@ -1,12 +1,38 @@
 apply plugin: 'java'
-
-sourceCompatibility = 1.5
+sourceCompatibility = 1.6
 version = '1.0'
 
-repositories {
-    mavenCentral()
-}
+
+
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+subprojects{
+/*============================================= 所有项目默认的配置 ===================================================*/
+
+/*=================================================== 仓库设置 =======================================================*/
+    repositories {
+        mavenLocal()
+        mavenRepo urls: "http://123.56.107.182:8081/nexus/content/repositories/releases/"
+        mavenCentral()
+    }
+    uploadArchives {
+        repositories.mavenDeployer {
+            repository(url: "http://123.56.107.182:8081/nexus/content/repositories/releases/") {
+                authentication(userName: "admin", password: "g123456")
+                pom.groupId = "gaoay.org"
+                pom.artifactId = "cent_os"
+            }
+        }
+    }
+/*================================================== jar包，设置 =====================================================*/
+    jar {
+        manifest {
+            attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': version
+        }
+    }
+/*====================== libs 中 *.jar 包含在compile中,主要针对不能发布在maven repository的jar包 =====================*/
+    ext.jarTree = fileTree(dir: '/libs', include: '**/*.jar')
+    compile jarTree
 }
