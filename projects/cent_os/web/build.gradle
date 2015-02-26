@@ -1,6 +1,9 @@
 apply plugin: 'jetty'
 httpPort = 8080
-
+jettyRun {
+    reload ="automatic"
+    scanIntervalSeconds = 1
+}
 dependencies {
     //compile project(':shared')
     compile(
